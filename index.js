@@ -161,11 +161,12 @@
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
 
-if (typeof JSON !== 'object') {
-    var JSON = {};
-}
+// Declare a `_JSON` so that we will not ruin the global JSON
+var _JSON = typeof JSON !== 'object'
+    ? {}
+    : JSON;
 
-module.exports = JSON;
+module.exports = _JSON;
 
 
 function f(n) {
@@ -357,8 +358,8 @@ function str(key, holder) {
 
 // If the JSON object does not yet have a stringify method, give it one.
 
-if (typeof JSON.stringify !== 'function') {
-    JSON.stringify = function (value, replacer, space) {
+if (typeof _JSON.stringify !== 'function') {
+    _JSON.stringify = function (value, replacer, space) {
 
 // The stringify method takes a value and an optional replacer, and an optional
 // space parameter, and returns a JSON text. The replacer can be a function
@@ -404,8 +405,8 @@ if (typeof JSON.stringify !== 'function') {
 
 // If the JSON object does not yet have a parse method, give it one.
 
-if (typeof JSON.parse !== 'function') {
-    JSON.parse = function (text, reviver) {
+if (typeof _JSON.parse !== 'function') {
+    _JSON.parse = function (text, reviver) {
 
 // The parse method takes a text and an optional reviver function, and returns
 // a JavaScript value if the text is a valid JSON text.
